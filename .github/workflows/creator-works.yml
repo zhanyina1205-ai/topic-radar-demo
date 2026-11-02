@@ -1,0 +1,27 @@
+name: Refresh creator works
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 */4 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: refresh-creator-works
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Collect public work metrics
+        run: python3 scripts/refresh-works.py
+      - name: Publish the verified feed
+        run: |
+          git add assets/peer-feed.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "刷新公开博主作品数据"
+          git pull --rebase origin main
+          git push origin HEAD:main
