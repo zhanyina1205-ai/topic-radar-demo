@@ -1,4 +1,4 @@
-// ../topic-radar/lib/radar/angles.ts
+// angles.ts
 function angleFor(title, lane, audience, fallback) {
   const wrap = (cut, opening, method) => ({ title: title + "\uFF5C" + cut, opening, method });
   if (lane === "\u79D1\u6280\u6570\u7801") {
@@ -14,7 +14,7 @@ function angleFor(title, lane, audience, fallback) {
   return wrap(fallback + "\uFF1F", "\u5982\u679C\u4F60\u662F" + audience + "\uFF0C\u770B\u5230\u300C" + title + "\u300D\u4F1A\u5148\u95EE\u4EC0\u4E48\uFF1F\u5148\u7528\u4E00\u4E2A\u5177\u4F53\u573A\u666F\u63D0\u51FA\u95EE\u9898\u3002", "");
 }
 
-// ../topic-radar/lib/radar/model.ts
+// model.ts
 var platforms = ["\u5FAE\u535A", "\u6296\u97F3", "\u5C0F\u7EA2\u4E66"];
 var lanes = {
   "\u79D1\u6280\u6570\u7801": { words: "AI,\u4EBA\u5DE5\u667A\u80FD,\u4E92\u8054\u7F51\u5927\u4F1A,\u6A21\u578B,\u673A\u5668\u4EBA,\u7535\u8111,\u624B\u673A,\u82F9\u679C,\u534E\u4E3A,\u82AF\u7247,\u5FAE\u8F6F,\u6570\u7801,\u79D1\u6280,\u8F6F\u4EF6,\u667A\u80FD,\u76F8\u673A", angle: "\u666E\u901A\u4EBA\u80FD\u7528\u4E0A\u54EA\u4E00\u90E8\u5206", method: "\u5F55\u4E00\u6B21\u5B9E\u9645\u64CD\u4F5C\uFF0C\u8BB0\u4E0B\u5B8C\u6210\u65F6\u95F4\u548C\u5931\u8D25\u6B65\u9AA4" },
@@ -32,13 +32,14 @@ function cleanKey(s) {
   return s.normalize("NFKC").toLowerCase().replace(/[\s\p{P}\p{S}]/gu, "").slice(0, 180);
 }
 function baseProfile(lane = "\u79D1\u6280\u6570\u7801") {
-  return { id: "", lane, audience: "\u5185\u5BB9\u521B\u4F5C\u8005", format: "\u56FE\u6587", target: "\u5C0F\u7EA2\u4E66", words: "", block: "", budget: "", sources: [...platforms], time: "08:30", frequency: "\u6BCF\u5929", enabled: true };
+  return { id: "", lane, audience: "\u5185\u5BB9\u521B\u4F5C\u8005", format: "\u56FE\u6587", target: "\u5C0F\u7EA2\u4E66", words: "", block: "", budget: "", sources: [...platforms, "\u54D4\u54E9\u54D4\u54E9"], time: "08:30", frequency: "\u6BCF\u5929", enabled: true };
 }
 function ranked(p, signals, marks, days = 3, now = Date.now()) {
   const lane = lanes[p.lane] || Object.values(lanes).find((l) => terms(l.words).some((w) => p.lane.toLowerCase().includes(w))), keywords = Array.from(/* @__PURE__ */ new Set([...terms(lane?.words || p.lane), ...terms(p.words)]));
   const muted = new Set(Object.values(marks).filter((m) => m.status === "\u5C11\u63A8\u540C\u7C7B").flatMap((m) => m.card.tags));
   const groups = /* @__PURE__ */ new Map();
   for (const s of signals) {
+    if (s.work) continue;
     const observed = s.at ?? Date.parse(s.date + "T23:59:59+08:00");
     if (observed < now - days * 864e5 || s.date > day(now) || !p.sources.includes(s.platform)) continue;
     const key = cleanKey(s.event || s.title);
@@ -81,6 +82,102 @@ function ranked(p, signals, marks, days = 3, now = Date.now()) {
   }
   return result.sort((a, b) => b.score - a.score || b.refs[0].date.localeCompare(a.refs[0].date) || a.key.localeCompare(b.key, "zh"));
 }
+
+// works.ts
+var workPlatforms = ["\u54D4\u54E9\u54D4\u54E9", "\u6296\u97F3", "\u5C0F\u7EA2\u4E66", "\u5FAE\u535A"];
+var categories = {
+  "\u79D1\u6280\u6570\u7801": ["\u6570\u7801", "\u8F6F\u4EF6\u5E94\u7528", "\u79D1\u5DE5\u673A\u68B0", "\u8BA1\u7B97\u673A\u6280\u672F"],
+  "\u804C\u573A\u6210\u957F": ["\u804C\u4E1A\u804C\u573A", "\u804C\u573A", "\u6C42\u804C"],
+  "\u7A7F\u642D\u751F\u6D3B": ["\u7A7F\u642D", "\u670D\u9970", "\u5BB6\u5C45\u623F\u4EA7", "\u65F6\u5C1A\u6F6E\u6D41"],
+  "\u7F8E\u98DF\u70D8\u7119": ["\u7530\u56ED\u7F8E\u98DF", "\u7F8E\u98DF\u4FA6\u63A2", "\u7F8E\u98DF\u8BB0\u5F55", "\u7F8E\u98DF\u5236\u4F5C", "\u7F8E\u98DF\u6D4B\u8BC4"],
+  "\u8FD0\u52A8\u6237\u5916": ["\u8FD0\u52A8\u6587\u5316", "\u8FD0\u52A8\u7EFC\u5408", "\u5065\u8EAB", "\u6237\u5916\u8FD0\u52A8"],
+  "\u65C5\u884C\u6444\u5F71": ["\u51FA\u884C", "\u6444\u5F71", "\u65C5\u884C"],
+  "\u5F71\u89C6\u5A31\u4E50": ["\u5F71\u89C6\u526A\u8F91", "\u5F71\u89C6\u6742\u8C08", "\u5A31\u4E50\u6742\u8C08", "\u9884\u544A\xB7\u8D44\u8BAF", "\u5A31\u4E50\u7C89\u4E1D\u521B\u4F5C"]
+};
+var hosts = {
+  "\u6296\u97F3": /(^|\.)(douyin\.com|iesdouyin\.com)$/,
+  "\u5C0F\u7EA2\u4E66": /(^|\.)(xiaohongshu\.com|xhslink\.com)$/,
+  "\u5FAE\u535A": /(^|\.)(weibo\.cn|weibo\.com)$/,
+  "\u54D4\u54E9\u54D4\u54E9": /(^|\.)bilibili\.com$/
+};
+function validWork(w) {
+  if (!w || typeof w !== "object") return false;
+  const x = w;
+  if (!workPlatforms.includes(x.platform) || !["\u89C6\u9891", "\u7B14\u8BB0", "\u56FE\u6587"].includes(x.kind) || ![x.title, x.author, x.url].every((v) => typeof v === "string" && v.trim().length > 0) || typeof x.category !== "string" || !Number.isSafeInteger(x.likes) || x.likes < 0 || ![x.publishedAt, x.observedAt].every((v) => Number.isSafeInteger(v) && v > 0) || x.publishedAt > x.observedAt || x.observedAt > Date.now() + 6e4) return false;
+  if (![x.views, x.saves, x.comments].every((v) => v === void 0 || Number.isSafeInteger(v) && v >= 0)) return false;
+  try {
+    const u = new URL(x.url);
+    return u.protocol === "https:" && !u.username && !u.password && hosts[x.platform].test(u.hostname) && u.pathname !== "/";
+  } catch {
+    return false;
+  }
+}
+function workSignal(w, manual = false) {
+  return { platform: w.platform, date: day(w.publishedAt), at: w.publishedAt, title: w.title, url: w.url, author: w.author, manual, work: w };
+}
+function workStats(w) {
+  return [[w.views, "\u64AD\u653E"], [w.likes, "\u8D5E"], [w.saves, "\u6536\u85CF"], [w.comments, "\u8BC4\u8BBA"]].filter(([n]) => typeof n === "number").map(([n, label]) => Number(n).toLocaleString("zh-CN") + " " + label).join(" \xB7 ");
+}
+function matchesLane(p, w) {
+  const text = (w.title + " " + w.category).toLowerCase();
+  if (terms(p.block).some((word) => text.includes(word))) return false;
+  if (w.category === p.lane || categories[p.lane]?.includes(w.category)) return true;
+  if (terms(p.words).some((word) => text.includes(word))) return true;
+  if (Object.values(categories).some((values) => values.includes(w.category))) return false;
+  return terms(lanes[p.lane]?.words || p.lane).some((word) => w.title.toLowerCase().includes(word));
+}
+function rankedWorks(p, signals, marks = {}, days = 3, now = Date.now()) {
+  const latest = /* @__PURE__ */ new Map();
+  for (const s of signals) {
+    const w = s.work;
+    if (!w || w.publishedAt > now || w.publishedAt < now - days * 864e5 || w.observedAt > now + 6e4 || !matchesLane(p, w)) continue;
+    const url = new URL(w.url);
+    const key = url.origin + url.pathname.replace(/\/$/, "");
+    if ((latest.get(key)?.work?.observedAt ?? 0) < w.observedAt) latest.set(key, s);
+  }
+  const groups = /* @__PURE__ */ new Map();
+  for (const s of latest.values()) {
+    const group = s.platform + s.work.kind;
+    if (!groups.has(group)) groups.set(group, []);
+    groups.get(group).push(s);
+  }
+  const cards = [];
+  for (const batch of groups.values()) {
+    if (batch.length < 4) continue;
+    batch.sort((a, b) => b.work.likes - a.work.likes || b.work.publishedAt - a.work.publishedAt);
+    const limit = Math.ceil(batch.length / 4);
+    const middle = Math.floor(batch.length / 2);
+    const median = (batch[middle].work.likes + batch[Math.floor((batch.length - 1) / 2)].work.likes) / 2;
+    for (const s of batch) {
+      const w = s.work, place = batch.findIndex((r) => r.work.likes === w.likes) + 1;
+      if (place > limit || w.likes <= median) break;
+      const key = "work:" + new URL(s.url).hostname + new URL(s.url).pathname.replace(/\/$/, "");
+      if (["\u5DF2\u53D1\u5E03", "\u8DF3\u8FC7", "\u5C11\u63A8\u540C\u7C7B"].includes(marks[key]?.status)) continue;
+      const angle = angleFor(w.title, p.lane, p.audience, lanes[p.lane]?.angle || "\u8FD9\u4E2A\u95EE\u9898\u600E\u4E48\u89E3\u51B3");
+      const method = angle.method || lanes[p.lane]?.method || "\u7528\u81EA\u5DF1\u7684\u573A\u666F\u6838\u5B9E\u4E00\u4E2A\u7ED3\u8BBA\uFF0C\u8BB0\u5F55\u8FC7\u7A0B\u548C\u7ED3\u679C";
+      const creatorSample = batch.filter((r) => r.author === w.author).length;
+      const timing = `\u540C\u5E73\u53F0\u3001\u540C\u5F62\u5F0F\u3001\u540C\u8D5B\u9053\u7684 ${batch.length} \u6761\u8FD1\u671F\u6837\u672C\uFF0C\u6309\u5DF2\u89C2\u6D4B\u7D2F\u8BA1\u70B9\u8D5E\u6392\u7B2C ${place}\uFF1B\u4E2D\u4F4D\u6570 ${median.toLocaleString("zh-CN")} \u8D5E\u3002`;
+      cards.push({
+        key,
+        refs: [s],
+        title: angle.title,
+        fact: w.title,
+        reason: `\u300C${w.author}\u300D\u7684${w.kind}\u5165\u9009\uFF08${w.category || "\u6807\u9898\u5339\u914D\u8D5B\u9053"}\uFF0C\u8BE5\u4F5C\u8005\u5728\u672C\u7EC4\u6709 ${creatorSample} \u6761\u4F5C\u54C1\uFF09\u3002\u53EF\u9762\u5411${p.audience}\uFF0C\u4ECE\u81EA\u5DF1\u7684\u7D20\u6750\u51FA\u53D1\u505A\u6210${p.target}${p.format}\u3002`,
+        timing,
+        opening: angle.opening,
+        outline: ["\u67E5\u770B\u539F\u4F5C\uFF0C\u627E\u51FA\u5B83\u5177\u4F53\u56DE\u7B54\u4E86\u8C01\u7684\u4EC0\u4E48\u95EE\u9898", method, "\u7528\u81EA\u5DF1\u7684\u6848\u4F8B\u9A8C\u8BC1\uFF0C\u518D\u7ED9\u51FA\u9002\u7528\u6761\u4EF6"],
+        method,
+        tags: [w.category || p.lane],
+        score: 1 - (place - 1) / batch.length
+      });
+    }
+  }
+  return { cards: cards.sort((a, b) => b.score - a.score || b.refs[0].at - a.refs[0].at), samples: latest.size };
+}
+function readPublicFeed(data) {
+  if (!data || typeof data !== "object" || !("works" in data) || !Array.isArray(data.works)) return [];
+  return data.works.filter(validWork).filter((w) => w.platform === "\u54D4\u54E9\u54D4\u54E9").map((w) => workSignal(w));
+}
 export {
   baseProfile,
   cleanKey,
@@ -89,5 +186,11 @@ export {
   lanes,
   platforms,
   ranked,
-  terms
+  rankedWorks,
+  readPublicFeed,
+  terms,
+  validWork,
+  workPlatforms,
+  workSignal,
+  workStats
 };

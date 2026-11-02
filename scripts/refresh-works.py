@@ -11,8 +11,7 @@ DEST = Path(__file__).resolve().parents[1] / "assets" / "peer-feed.json"
 NOW = int(time.time() * 1000)
 CUTOFF = NOW - 7 * 86400000
 
-def fetch_page(page):
-    url = f"https://api.bilibili.com/x/web-interface/popular?ps=50&pn={page}"
+def fetch_page(url):
     req = Request(url, headers={"User-Agent": "TopicRadar/1.0"})
     with urlopen(req, timeout=18) as response:
         body = json.load(response)
@@ -39,8 +38,18 @@ def fetch_page(page):
 def main():
     old = json.loads(DEST.read_text()) if DEST.exists() else {"works":[]}
     latest = {w["url"]:w for w in old["works"] if w["publishedAt"] >= CUTOFF}
+    urls = [f"https://api.bilibili.com/x/web-interface/popular?ps=50&pn={page}" for page in range(1, 6)]
+    # These category feeds widen coverage beyond the general popularity list.
+    urls += [f"https://api.bilibili.com/x/web-interface/ranking/v2?rid={rid}&type=all"
+             for rid in (188, 155, 211, 36)]
+    pages = []
     with ThreadPoolExecutor(max_workers=2) as pool:
-        pages = list(pool.map(fetch_page, range(1,6)))
+        pending = [pool.submit(fetch_page, url) for url in urls]
+        for request in pending:
+            try:
+                pages.append(request.result())
+            except (OSError, ValueError) as error:
+                print("Feed unavailable:", type(error).__name__)
     fresh = [row for rows in pages for row in rows]
     if not fresh:
         raise RuntimeError("没有新样本，保留上次采集结果")
