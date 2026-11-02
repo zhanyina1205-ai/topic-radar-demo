@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 258" fill="none">
+ <defs>
+  <pattern id="mesh" width="11" height="11" patternUnits="userSpaceOnUse"><path d="M11 0H0V11" stroke="#ac527a" opacity=".16" stroke-width=".7"/></pattern>
+  <linearGradient id="dish" x1="0" y1="0" x2=".6" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#f3f0ed"/><stop offset=".27" stop-color="#7c777c"/><stop offset=".58" stop-color="#29262a"/><stop offset="1" stop-color="#bdb7b9"/></linearGradient>
+  <linearGradient id="inside" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#222024"/><stop offset=".36" stop-color="#827e80"/><stop offset=".65" stop-color="#eae6e7"/><stop offset="1" stop-color="#999296"/></linearGradient>
+  <pattern id="dots" width="3" height="3" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".65" fill="#151319" opacity=".7"/></pattern>
+ </defs>
+ <rect width="350" height="258" rx="14" fill="#f2c3d8"/><rect width="350" height="258" rx="14" fill="url(#mesh)"/>
+ <g font-family="Arial,sans-serif" font-size="9" fill="#392532" letter-spacing="1.7"><text x="18" y="23">FIG. 01</text><text x="238" y="239">RECEIVER / 01</text></g>
+ <g stroke="#924963" stroke-width=".8"><path d="M15 40h11m-5 -5v10M322 20h11m-5 -5v10M15 232h11m-5 -5v10"/></g>
+ <ellipse cx="173" cy="215" rx="76" ry="7" fill="#6d4156" opacity=".19"/>
+ <path d="M156 151l21 2 13 44 18 10-67 0 13-11z" fill="url(#dish)" stroke="#2a272b" stroke-width="1.5"/>
+ <path d="M143 202l44-4 33 12-60 8-34-8z" fill="#c3bfc2" stroke="#272428"/><path d="M126 210l34 8 60-8v5l-60 9-34-9z" fill="#333134"/>
+ <g transform="rotate(-32 172 126)"><path d="M54 107c12 38 65 79 111 78 52-1 104-42 126-78z" fill="url(#dish)" stroke="#29252b" stroke-width="1.5"/>
+ <path d="M58 111c30 39 73 66 108 72m-69-68c20 43 48 64 68 68m41-67c-5 38-19 58-37 68m77-72c-17 39-47 66-74 73" stroke="#514d50" stroke-width="1.1"/>
+ <ellipse cx="172" cy="107" rx="119" ry="39" fill="url(#inside)" stroke="#211f22" stroke-width="2"/><ellipse cx="172" cy="107" rx="113" ry="34" fill="url(#dots)" stroke="#bfbabc"/>
+ <ellipse cx="172" cy="106" rx="76" ry="22" stroke="#666167"/><ellipse cx="172" cy="106" rx="38" ry="10" stroke="#696469"/>
+ <path d="M61 110l118-57 104 57m-104-57l-14 86" fill="none" stroke="#444046" stroke-width="2.4"/><path d="M178 54l-5-12 7-4 8 13z" fill="#2b292c" stroke="#29262c"/>
+ </g>
+ <g stroke="#b22870" stroke-width="2" stroke-linecap="round"><path d="M143 65c-1-7 1-12 5-17m-12 18c-2-10 1-19 7-26m-14 27c-3-13 1-25 10-35"/></g>
+</svg>

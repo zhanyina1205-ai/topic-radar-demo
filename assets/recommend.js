@@ -1,0 +1,93 @@
+// ../topic-radar/lib/radar/angles.ts
+function angleFor(title, lane, audience, fallback) {
+  const wrap = (cut, opening, method) => ({ title: title + "\uFF5C" + cut, opening, method });
+  if (lane === "\u79D1\u6280\u6570\u7801") {
+    if (/模型|智能|豆包|AI|ai/.test(title)) return wrap("\u62FF\u4E00\u4EFD\u771F\u5B9E\u4EFB\u52A1\u8BD5\u7528\uFF0C\u8981\u6539\u51E0\u904D\u624D\u80FD\u4EA4\u7A3F\uFF1F", "\u5148\u5C55\u793A\u539F\u59CB\u4EFB\u52A1\u4E0E\u5B8C\u6210\u6807\u51C6\uFF0C\u518D\u8BA9\u89C2\u4F17\u770B\u5B8C\u6574\u64CD\u4F5C\u3002", "\u9009\u62E9\u81EA\u5DF1\u80FD\u5408\u6CD5\u4F7F\u7528\u7684\u7248\u672C\uFF0C\u4FDD\u7559\u8F93\u5165\u3001\u8F93\u51FA\u548C\u4EBA\u5DE5\u4FEE\u6539\u8BB0\u5F55");
+    if (/机器人/.test(title)) return wrap("\u628A\u73B0\u573A\u753B\u9762\u653E\u6162\uFF0C\u770B\u770B\u673A\u5668\u5230\u5E95\u5B8C\u6210\u4E86\u54EA\u4E00\u6B65", "\u5148\u5B9A\u683C\u6700\u5173\u952E\u7684\u4E00\u5E27\uFF0C\u8BA9\u8BFB\u8005\u731C\u6D4B\u54EA\u91CC\u6700\u96BE\u3002", "\u6838\u5BF9\u516C\u5F00\u6F14\u793A\u4E0E\u539F\u59CB\u8BF4\u660E\uFF0C\u533A\u5206\u81EA\u4E3B\u5B8C\u6210\u3001\u9065\u63A7\u548C\u672A\u77E5\u90E8\u5206");
+    if (/手机|相机|电脑|芯片/.test(title)) return wrap("\u5347\u7EA7\u4E4B\u524D\uFF0C\u7528\u4E09\u4E2A\u65E5\u5E38\u573A\u666F\u5224\u65AD\u503C\u4E0D\u503C", "\u4ECE\u53D7\u4F17\u6700\u5E38\u7528\u7684\u529F\u80FD\u5207\u5165\uFF0C\u5217\u660E\u73B0\u6709\u8BBE\u5907\u3002", "\u67E5\u8BC1\u7248\u672C\u548C\u914D\u7F6E\uFF0C\u7528\u540C\u4E00\u7EC4\u4EFB\u52A1\u6216\u516C\u5F00\u6837\u5F20\u505A\u6BD4\u8F83");
+    if (/大会|峰会/.test(title)) return wrap("\u8BAE\u7A0B\u91CC\u54EA\u9879\u53D8\u5316\u503C\u5F97\u666E\u901A\u4F7F\u7528\u8005\u7559\u610F\uFF1F", "\u628A\u516C\u5F00\u8BAE\u7A0B\u5C55\u5F00\uFF0C\u5708\u51FA\u548C\u65E5\u5E38\u4F7F\u7528\u76F8\u5173\u7684\u4E00\u9879\u3002", "\u67E5\u4E3B\u529E\u65B9\u8BAE\u7A0B\u53CA\u6F14\u793A\u8D44\u6599\uFF0C\u533A\u5206\u5DF2\u7ECF\u53D1\u5E03\u4E0E\u4ECD\u5728\u89C4\u5212\u7684\u5185\u5BB9");
+  }
+  if (lane === "\u804C\u573A\u6210\u957F" && /裁员|招聘|求职|简历|面试/.test(title)) return wrap("\u7ED9\u6C42\u804C\u8005\u7684\u4E00\u5F20\u6838\u5B9E\u6E05\u5355", "\u5C55\u793A\u4E00\u6761\u5C97\u4F4D\u4FE1\u606F\uFF0C\u8BF7\u8BFB\u8005\u627E\u51FA\u4E09\u4E2A\u8FD8\u9700\u8981\u786E\u8BA4\u7684\u6761\u4EF6\u3002", "\u5BF9\u7167\u4F01\u4E1A\u516C\u5F00\u8BF4\u660E\u548C\u5C97\u4F4D\u63CF\u8FF0\uFF0C\u6574\u7406\u53EF\u76F4\u63A5\u63D0\u95EE\u7684\u53E5\u5B50");
+  if (lane === "\u7A7F\u642D\u751F\u6D3B" && /降温|暖|冬|通勤|衣/.test(title)) return wrap("\u901A\u52E4\u7A7F\u4E24\u5C42\u8FD8\u662F\u4E09\u5C42\uFF1F\u8FDB\u51FA\u5730\u94C1\u5404\u8BD5\u4E00\u6B21", "\u540C\u4E00\u6BB5\u901A\u52E4\u8DEF\uFF0C\u5148\u62CD\u5BA4\u5916\uFF0C\u518D\u62CD\u8FDB\u7AD9\u540E\u6700\u95F7\u7684\u90A3\u4E00\u6BB5\u3002", "\u8BB0\u5F55\u5929\u6C14\u3001\u9762\u6599\u3001\u603B\u5C42\u6570\u4E0E\u4F53\u611F\uFF0C\u62CD\u6444\u80FD\u76F4\u63A5\u6BD4\u8F83\u7684\u753B\u9762");
+  if (lane === "\u8FD0\u52A8\u6237\u5916" && /冷|暖|冬|通勤|骑|降温/.test(title)) return wrap("\u540C\u4E00\u6BB5\u9A91\u884C\u8DEF\uFF0C\u9632\u98CE\u5C42\u548C\u52A0\u539A\u5C42\u600E\u4E48\u9009\uFF1F", "\u5148\u4EA4\u4EE3\u8DEF\u7EBF\u3001\u5929\u6C14\u548C\u9A91\u884C\u65F6\u957F\uFF0C\u518D\u5C55\u793A\u4E24\u5957\u88C5\u5907\u3002", "\u540C\u8DEF\u7EBF\u5206\u522B\u8BB0\u5F55\u8FCE\u98CE\u3001\u51FA\u6C57\u548C\u505C\u8F66\u540E\u7684\u4F53\u611F");
+  if (lane === "\u7F8E\u98DF\u70D8\u7119" && /面包|蛋糕|烘焙|甜点/.test(title)) return wrap("\u4E00\u6B21\u53EA\u6539\u4E00\u4E2A\u53D8\u91CF\uFF0C\u6210\u54C1\u5230\u5E95\u5DEE\u5728\u54EA\uFF1F", "\u5148\u6446\u51FA\u539F\u6599\u548C\u4E24\u4EFD\u914D\u65B9\uFF0C\u628A\u552F\u4E00\u4E0D\u540C\u7684\u6B65\u9AA4\u5708\u51FA\u6765\u3002", "\u56FA\u5B9A\u91CD\u91CF\u548C\u5668\u5177\uFF0C\u8BB0\u5F55\u6E29\u5EA6\u3001\u65F6\u95F4\u4E0E\u6210\u54C1\u5207\u9762");
+  return wrap(fallback + "\uFF1F", "\u5982\u679C\u4F60\u662F" + audience + "\uFF0C\u770B\u5230\u300C" + title + "\u300D\u4F1A\u5148\u95EE\u4EC0\u4E48\uFF1F\u5148\u7528\u4E00\u4E2A\u5177\u4F53\u573A\u666F\u63D0\u51FA\u95EE\u9898\u3002", "");
+}
+
+// ../topic-radar/lib/radar/model.ts
+var platforms = ["\u5FAE\u535A", "\u6296\u97F3", "\u5C0F\u7EA2\u4E66"];
+var lanes = {
+  "\u79D1\u6280\u6570\u7801": { words: "AI,\u4EBA\u5DE5\u667A\u80FD,\u4E92\u8054\u7F51\u5927\u4F1A,\u6A21\u578B,\u673A\u5668\u4EBA,\u7535\u8111,\u624B\u673A,\u82F9\u679C,\u534E\u4E3A,\u82AF\u7247,\u5FAE\u8F6F,\u6570\u7801,\u79D1\u6280,\u8F6F\u4EF6,\u667A\u80FD,\u76F8\u673A", angle: "\u666E\u901A\u4EBA\u80FD\u7528\u4E0A\u54EA\u4E00\u90E8\u5206", method: "\u5F55\u4E00\u6B21\u5B9E\u9645\u64CD\u4F5C\uFF0C\u8BB0\u4E0B\u5B8C\u6210\u65F6\u95F4\u548C\u5931\u8D25\u6B65\u9AA4" },
+  "\u804C\u573A\u6210\u957F": { words: "\u804C\u573A,\u4E0A\u73ED,\u5DE5\u8D44,\u88C1\u5458,\u5DE5\u4F5C,\u5458\u5DE5,\u6253\u5DE5,\u6C42\u804C,\u9762\u8BD5,\u516C\u53F8,\u62DB\u8058,\u7B80\u5386,\u52A0\u73ED,\u7EE9\u6548", angle: "\u9047\u5230\u7C7B\u4F3C\u60C5\u51B5\uFF0C\u7B2C\u4E00\u6B65\u80FD\u505A\u4EC0\u4E48", method: "\u6311\u4E00\u4E2A\u5178\u578B\u5DE5\u4F5C\u573A\u666F\uFF0C\u51C6\u5907\u4E00\u5F20\u80FD\u7167\u7740\u7528\u7684\u6E05\u5355" },
+  "\u7A7F\u642D\u751F\u6D3B": { words: "\u901A\u52E4,\u7A7F\u642D,\u7A7F\u8863,\u8863\u670D,\u5927\u8863,\u56FD\u98CE,\u6C49\u670D,\u7FBD\u7ED2,\u6696\u548C,\u51AC\u5929,\u964D\u6E29,\u6362\u5B63,\u65F6\u5C1A,\u670D\u88C5,\u5BB6\u5C45,\u6536\u7EB3,\u751F\u6D3B", angle: "\u6362\u5230\u65E5\u5E38\u573A\u666F\uFF0C\u600E\u4E48\u9009\u66F4\u5408\u9002", method: "\u51C6\u5907\u4E24\u79CD\u642D\u914D\uFF0C\u5728\u540C\u4E00\u573A\u666F\u62CD\u6444\u5E76\u8BB0\u5F55\u5DEE\u5F02" },
+  "\u7F8E\u98DF\u70D8\u7119": { words: "\u5403\u996D,\u7F8E\u98DF,\u98DF\u6750,\u86CB\u7CD5,\u9762\u5305,\u70D8\u7119,\u9910\u5385,\u5976\u8336,\u751C\u70B9,\u53A8\u623F,\u505A\u996D,\u5496\u5561,\u706B\u9505,\u65E9\u9910,\u6C34\u679C", angle: "\u5728\u5BB6\u505A\u4E00\u6B21\uFF0C\u54EA\u4E00\u6B65\u6700\u5F71\u54CD\u7ED3\u679C", method: "\u5217\u51FA\u98DF\u6750\u4E0E\u7528\u91CF\uFF0C\u4FDD\u7559\u64CD\u4F5C\u8FC7\u7A0B\u548C\u5B9E\u9645\u6210\u54C1" },
+  "\u8FD0\u52A8\u6237\u5916": { words: "\u9A91\u884C,\u901A\u52E4,\u8FD0\u52A8,\u6696\u548C,\u51AC\u5929,\u964D\u6E29,\u9A91\u8F66,\u8DD1\u6B65,\u9A6C\u62C9\u677E,\u6BD4\u8D5B,\u51A0\u519B,\u6237\u5916,\u8DB3\u7403,\u5065\u8EAB,\u88C5\u5907,\u7F51\u7403,\u7FBD\u6BDB\u7403,\u6ED1\u96EA", angle: "\u65B0\u624B\u7B2C\u4E00\u6B21\u5C1D\u8BD5\u8981\u51C6\u5907\u4EC0\u4E48", method: "\u7528\u4E00\u6B21\u4F4E\u95E8\u69DB\u4F53\u9A8C\u8BB0\u5F55\u6B65\u9AA4\u3001\u88C5\u5907\u548C\u4F53\u611F" },
+  "\u65C5\u884C\u6444\u5F71": { words: "\u65C5\u884C,\u65C5\u6E38,\u9152\u5E97,\u822A\u73ED,\u98CE\u666F,\u516C\u56ED,\u666F\u533A,\u6E38\u5BA2,\u5047\u671F,\u6444\u5F71,\u62CD\u7167,\u9732\u8425,\u5F92\u6B65,\u53E4\u9547", angle: "\u7B2C\u4E00\u6B21\u53BB\uFF0C\u600E\u6837\u89C4\u5212\u4E00\u6B21\u4F53\u9A8C", method: "\u6838\u5B9E\u5F00\u653E\u65F6\u95F4\u548C\u8DEF\u7EBF\uFF0C\u51C6\u5907\u884C\u7A0B\u56FE\u4E0E\u73B0\u573A\u7D20\u6750" },
+  "\u5F71\u89C6\u5A31\u4E50": { words: "\u7535\u5F71,\u5267\u7EC4,\u6F14\u5458,\u5F00\u64AD,\u4E0A\u6620,\u6F14\u5531\u4F1A,\u7EFC\u827A,\u6B4C\u624B,\u7968\u623F,\u5BFC\u6F14,\u89D2\u8272,\u821E\u53F0,\u5267\u96C6,\u5927\u7ED3\u5C40", angle: "\u54EA\u4E2A\u7EC6\u8282\u503C\u5F97\u5355\u72EC\u62C6\u5F00\u8BB2", method: "\u56DE\u770B\u516C\u5F00\u7247\u6BB5\uFF0C\u5217\u51FA\u4E24\u4E2A\u5E26\u51FA\u5904\u7684\u89C2\u5BDF" }
+};
+var empty = () => ({ profiles: [], active: "", imports: [], marks: {} });
+var day = (ts = Date.now()) => new Date(ts + 288e5).toISOString().slice(0, 10);
+var terms = (s) => s.split(/[,，、;；\s]+/).map((x) => x.trim().toLowerCase()).filter(Boolean);
+function cleanKey(s) {
+  return s.normalize("NFKC").toLowerCase().replace(/[\s\p{P}\p{S}]/gu, "").slice(0, 180);
+}
+function baseProfile(lane = "\u79D1\u6280\u6570\u7801") {
+  return { id: "", lane, audience: "\u5185\u5BB9\u521B\u4F5C\u8005", format: "\u56FE\u6587", target: "\u5C0F\u7EA2\u4E66", words: "", block: "", budget: "", sources: [...platforms], time: "08:30", frequency: "\u6BCF\u5929", enabled: true };
+}
+function ranked(p, signals, marks, days = 3, now = Date.now()) {
+  const lane = lanes[p.lane] || Object.values(lanes).find((l) => terms(l.words).some((w) => p.lane.toLowerCase().includes(w))), keywords = Array.from(/* @__PURE__ */ new Set([...terms(lane?.words || p.lane), ...terms(p.words)]));
+  const muted = new Set(Object.values(marks).filter((m) => m.status === "\u5C11\u63A8\u540C\u7C7B").flatMap((m) => m.card.tags));
+  const groups = /* @__PURE__ */ new Map();
+  for (const s of signals) {
+    const observed = s.at ?? Date.parse(s.date + "T23:59:59+08:00");
+    if (observed < now - days * 864e5 || s.date > day(now) || !p.sources.includes(s.platform)) continue;
+    const key = cleanKey(s.event || s.title);
+    if (!key || marks[key]?.status === "\u5DF2\u53D1\u5E03" || ["\u8DF3\u8FC7", "\u5C11\u63A8\u540C\u7C7B"].includes(marks[key]?.status)) continue;
+    const existing = groups.get(key) || [];
+    existing.push(s);
+    groups.set(key, existing);
+  }
+  const result = [];
+  for (const [key, refs] of groups) {
+    refs.sort((a, b) => b.date.localeCompare(a.date) || (b.at || 0) - (a.at || 0) || Number(!!b.manual) - Number(!!a.manual));
+    const s = refs[0], body = refs.map((r) => r.title + " " + (r.summary || "") + " " + (r.author || "")).join(" ").toLowerCase();
+    if (terms(p.block).some((x) => body.includes(x))) continue;
+    const tags = keywords.filter((x) => body.includes(x));
+    if (!tags.length) continue;
+    const unique = refs.filter((r, i, all) => all.findIndex((q) => q.platform === r.platform && q.url === r.url) === i);
+    const pd = new Set(refs.map((r) => r.platform)).size, dates = new Set(refs.map((r) => r.date)).size;
+    const ranks = refs.filter((r) => r.platform === "\u6296\u97F3" && r.rank && r.at);
+    const previous = ranks.find((r) => r.at < ranks[0].at);
+    const movement = previous ? previous.rank - ranks[0].rank : 0;
+    const timing = previous ? `\u6296\u97F3\u5F52\u6863\u6392\u540D\u7B2C ${previous.rank} \u2192 ${ranks[0].rank}\uFF0C${movement > 0 ? "\u6392\u540D\u4E0A\u5347" : movement < 0 ? "\u6392\u540D\u56DE\u843D" : "\u6392\u540D\u6301\u5E73"}` : pd > 1 ? `\u5DF2\u5728 ${pd} \u4E2A\u5E73\u53F0\u51FA\u73B0\uFF0C\u53EF\u6BD4\u8F83\u4E0D\u540C\u8BA8\u8BBA\u89D2\u5EA6` : dates > 1 ? `\u5728 ${dates} \u4E2A\u5F52\u6863\u65E5\u671F\u51FA\u73B0\uFF0C\u503C\u5F97\u7EE7\u7EED\u8DDF\u8E2A` : s.manual ? "\u6765\u81EA\u4F60\u7684\u7D20\u6750\uFF0C\u4EC5\u6709\u5355\u6761\u7EBF\u7D22\uFF0C\u5EFA\u8BAE\u5148\u6838\u5B9E" : "\u9996\u6B21\u53D1\u73B0 \xB7 \u65E5\u5F52\u6863\u672A\u63D0\u4F9B\u70ED\u5EA6\u53D8\u5316";
+    const angle = lane?.angle || "\u8FD9\u4E2A\u95EE\u9898\u5177\u4F53\u600E\u4E48\u89E3\u51B3";
+    const lead = p.format.includes("\u89C6\u9891") ? "\u955C\u5934\u4E00" : "\u7B2C\u4E00\u5C4F";
+    const proposal = angleFor(s.title, p.lane, p.audience, angle);
+    const method = (proposal.method || lane?.method || "\u9009\u4E00\u4E2A\u5177\u4F53\u6848\u4F8B\uFF0C\u6838\u5BF9\u539F\u59CB\u8D44\u6599\uFF0C\u518D\u8BB0\u5F55\u9A8C\u8BC1\u8FC7\u7A0B") + (p.budget ? `\u3002\u521B\u4F5C\u6761\u4EF6\uFF1A${p.budget}` : "");
+    const age = Math.max(0, (Date.parse(day(now)) - Date.parse(s.date)) / 864e5);
+    result.push({
+      key,
+      title: proposal.title,
+      fact: s.summary || s.title,
+      reason: `\u547D\u4E2D\u300C${tags.slice(0, 3).join("\u3001")}\u300D\u3002\u56F4\u7ED5${p.audience}\u5173\u5FC3\u7684\u300C${angle}\u300D\uFF0C\u9002\u5408\u505A\u6210${p.target}${p.format}\u3002`,
+      timing,
+      opening: lead + "\uFF1A" + proposal.opening,
+      method,
+      outline: ["\u7528\u539F\u59CB\u6765\u6E90\u4EA4\u4EE3\u8BDD\u9898\u80CC\u666F\uFF0C\u533A\u5206\u4E8B\u5B9E\u4E0E\u5F85\u6838\u5B9E\u8BF4\u6CD5", method, `\u6574\u7406\u7ED9${p.audience}\u7684\u884C\u52A8\u5EFA\u8BAE\uFF0C\u5E76\u6CE8\u660E\u9002\u7528\u6761\u4EF6`],
+      refs: unique,
+      tags,
+      score: Math.min(3, Math.max(-3, movement / 4)) + tags.length * 5 + Math.min(pd, 3) * 2 + Math.min(dates, 3) - age * 0.8 + Number(!!s.manual) - tags.filter((x) => muted.has(x)).length * 8
+    });
+  }
+  return result.sort((a, b) => b.score - a.score || b.refs[0].date.localeCompare(a.refs[0].date) || a.key.localeCompare(b.key, "zh"));
+}
+export {
+  baseProfile,
+  cleanKey,
+  day,
+  empty,
+  lanes,
+  platforms,
+  ranked,
+  terms
+};
